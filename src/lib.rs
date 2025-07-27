@@ -6,6 +6,7 @@ use log::{debug, info};
 
 pub mod config;
 pub mod clients;
+pub mod core;
 
 pub fn init() -> Result<()> {
     info!("Initializing SharPi agent");
