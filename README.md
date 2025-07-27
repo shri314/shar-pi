@@ -1,4 +1,4 @@
-# AI Agent
+# SharPi
 
 ## Proposed Architecture
 

@@ -1,27 +1,22 @@
-// AI Agent Library
-//
-// A command-line AI agent with Anthropic Sonnet support and various terminal integrations
-// including tmux, neovim/vim, fzf, and git.
+// Copyright (c) 2025 SharPi Contributors
+// MIT License
 
 use anyhow::Result;
 use log::{debug, info};
 
-// Export modules
-pub mod models;
+pub mod config;
+pub mod clients;
 
-/// Initialize the AI agent
 pub fn init() -> Result<()> {
-    info!("Initializing AI agent");
-    debug!("AI agent initialization complete");
+    info!("Initializing SharPi agent");
+    debug!("SharPi agent initialization complete");
     Ok(())
 }
 
-/// Version information for the AI agent
 pub fn version() -> &'static str {
     env!("CARGO_PKG_VERSION")
 }
 
-/// Build information for the AI agent
 pub fn build_info() -> String {
     format!(
         "Version: {}\nBuild date: {}",
