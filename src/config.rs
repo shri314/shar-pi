@@ -60,47 +60,46 @@ pub fn get_config_path() -> PathBuf {
 
 pub fn load_config() -> Result<Config> {
     let config_path = get_config_path();
-    
+
     if !config_path.exists() {
         return Err(anyhow::anyhow!(
             "Configuration file not found at {}. Run 'spi config init' to create it.",
             config_path.display()
         ));
     }
-    
+
     let config_str = fs::read_to_string(&config_path)
         .context(format!("Failed to read config file: {}", config_path.display()))?;
-    
+
     let config: Config = toml::from_str(&config_str)
         .context("Failed to parse config file")?;
-    
+
     Ok(config)
 }
 
-pub fn create_default_config() -> Result<()> {
+pub fn create_default_config(force: bool) -> Result<()> {
     let config_path = get_config_path();
-    
+
     let is_overwriting = config_path.exists();
-    let args: Vec<String> = std::env::args().collect();
-    
-    if is_overwriting && !args.contains(&"--force".to_string()) {
+
+    if is_overwriting && !force {
         println!("Configuration file already exists at {}", config_path.display());
-        println!("Use 'spi config init --force' to overwrite the existing configuration");
+        println!("Use 'spi init --force' to overwrite the existing configuration");
         return Ok(());
     }
-    
+
     if let Some(parent) = config_path.parent() {
         fs::create_dir_all(parent)
             .context(format!("Failed to create directory: {}", parent.display()))?;
     }
-    
+
     let default_config = r#"[clients]
 default = "openai"
 
 [clients.openai]
 api_key = "your-api-key-here"
 api_url = "https://api.openai.com/v1"
-model = "gpt-4-turbo"
+model = "claude-3-7-sonnet"
 max_tokens = 1000
 temperature = 0.7
 
@@ -108,10 +107,10 @@ temperature = 0.7
 
 [commands]
 "#;
-    
+
     fs::write(&config_path, default_config)
         .context(format!("Failed to write config file: {}", config_path.display()))?;
-    
+
     if is_overwriting {
         println!("Created default configuration at {} (overwritten with --force)", config_path.display());
     } else {
