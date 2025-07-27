@@ -6,6 +6,9 @@
 use anyhow::Result;
 use log::{debug, info};
 
+// Export modules
+pub mod models;
+
 /// Initialize the AI agent
 pub fn init() -> Result<()> {
     info!("Initializing AI agent");

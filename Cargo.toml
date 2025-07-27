@@ -9,6 +9,7 @@ rust-version = "1.80.0"
 [dependencies]
 anyhow = "1.0"
 log = "0.4"
+ureq = "2.9.1"
 
 [[bin]]
 name = "ai-agent"
